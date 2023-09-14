@@ -22,27 +22,41 @@ def log(request):
                 login(request, user)
                 return redirect('/')
             elif user is None:
-                return HttpResponse("No user found")
+                # return HttpResponse("No user found")
+                return render(request, 'login.html', {'no_u': f"Username or password incorrect"})
         elif 'register' in request.POST:
             return render(request, 'signup.html')
+
     return render(request, 'login.html')
 
 
 def reg(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         if 'signup' in request.POST:
             usr = request.POST['user']
             pas = request.POST['pas']
             em = request.POST['em']
-            u = User.objects.create_user(username=usr,
-                                         password=pas,
-                                         email=em,
-                                         is_active=True)
-            u.save()
-            return redirect('/login')
-        else:
-            return HttpResponse("Username not available")
-    # return render(request, 'signup.html')
+            checkem = User.objects.filter(email=em).first()
+            if checkem is not None:
+                return render(request, 'signup.html', {'checkem': f'Email {em} is not available'})
+            else:
+                try:
+                    u = User.objects.create_user(username=usr,
+                                                 password=pas,
+                                                 email=em,
+                                                 is_active=True)
+
+                    u.save()
+                    user = authenticate(request, username=usr, password=pas)
+                    if user is not None:
+                        login(request, user)
+                        return redirect('/')
+                except:
+                    # return HttpResponse(f"Username {usr} not available")
+                    return render(request, 'signup.html', {'checku': f'Username {usr} is not available'})
+    return render(request, 'signup.html',)
 
 
 def logo(request):
@@ -50,7 +64,7 @@ def logo(request):
     return redirect('/login')
 
 
-@login_required
+@login_required(login_url='/login/')
 def todo(request):
     if request.method == 'POST':
         user = request.user

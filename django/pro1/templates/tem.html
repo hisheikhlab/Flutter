@@ -33,7 +33,7 @@
     TODO LIST of {{ user }}
   <br>
   <img width="100", height="100" src="https://img.freepik.com/premium-vector/vector-cartoon-list-icon-comic-style-checklist-task-list-sign-illustration-pictogram-reminder-business-splash-effect-concept_157943-4309.jpg?w=740" class="rounded" alt="...">
-  <br><a href="{% url 'logout' %}" >Logout</a>
+  <br><a style="text-decoration: underline; color: blue" href="{% url 'logout' %}" >Logout</a>
     <br>
 </div>
 <!--<br>-->
@@ -60,7 +60,7 @@
   <tbody class="">
     {% for todo in todos %}
       <tr>
-        <td style="width: 5%">
+        <td style="width: 7%">
           <form method="post" action="">
             {% csrf_token %}
               {% if todo.completed %}
@@ -72,14 +72,14 @@
               {% endif %}
           </form>
         </td>
-        <td style=" word-wrap: break-word; width: 12%">{{ todo.priority }}</td>
+        <td style=" word-wrap: break-word; width: 22%">{{ todo.priority }}</td>
           {% if todo.completed %}
         <td class="strikethrough" style=" word-wrap: break-word; width: 70%">{{ todo.task }}</td>
           {% else %}
-        <td style=" word-wrap: break-word; width: 70%">{{ todo.task }}</td>
+        <td style=" word-wrap: break-word; width: 78%">{{ todo.task }}</td>
           {% endif %}
-        <td style=" word-wrap: break-word; width: 20%">{{ todo.due }}</td>
-        <td style=" width: 13%">
+        <td style=" word-wrap: break-word; width: 30%">{{ todo.due }}</td>
+        <td style=" width: 15%">
           <form method="post"  >
             {% csrf_token %}
             <input type="hidden" name="s_id" value="{{ todo.id }}">
@@ -91,6 +91,8 @@
         <td></td>
         <td></td>
         <td>No tasks yet.</td>
+        <td></td>
+        <td></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -106,7 +108,7 @@
             <span class="input-group-text" >New Task</span>
             <input type="text" required name="pr" placeholder="Priority: High, Medium, Low" class="form-control">
             <input type="text" required name="tk"  placeholder="Task details"  class="form-control"><br>
-            <input type="text" name="dt" placeholder="Due date" class="form-control">
+            <input type="date" name="dt" placeholder="Due date" class="form-control">
             <button type="submit" name="add" class="btn btn-primary">Add</button>
         </div>
     </form>

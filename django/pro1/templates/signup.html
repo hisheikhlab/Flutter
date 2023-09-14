@@ -40,17 +40,20 @@
         {% csrf_token %}
           <span class="" style=" ">Enter details</span><br><br>
           <input type="text" placeholder="username" class="form-control" name="user" required><br>
-          <input type="text" placeholder="email" class="form-control" name="em" required><br>
-          <input type="text" placeholder="password" class="form-control" name="pas" required><br>
+          <input type="email" placeholder="email" class="form-control" name="em" required><br>
+          <input type="password" placeholder="password" class="form-control" name="pas" required><br>
           <button type="submit" name="signup" class="btn btn-primary">Register</button>
     </form>
+</div><br>
+<div class="text-center " style="font-size: 16px;
+        letter-spacing: 1px;
+        color: red;
+        font-weight: bold">
+    {% if checku is not None %}
+        {{checku}}
+    {% endif %}
+    {{checkem}}
 </div>
-<!--<form method="post" action="{% url 'login' %}">-->
-<!--    {% csrf_token %}-->
-<!--  Username: <input type="text" placeholder="username"  name="user" required><br>-->
-<!--  Password: <input type="text" placeholder="password" name="pas" required ><br>-->
-<!--  <button type="submit" name="register" >Register</button><button type="submit" name="login" >Login</button>-->
-<!--</form>-->
 </body>
 </html></title>
 </head>
