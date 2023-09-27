@@ -2,9 +2,9 @@ class Movie {
   String title;
   String poster;
   String overview;
-  double rating;
+  dynamic rating;
   String releasedate;
-  int reviews;
+  dynamic reviews;
 
   Movie({
     required this.title,

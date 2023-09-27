@@ -4,6 +4,7 @@ import 'package:flutter_application_1/models/moviemodl.dart';
 import 'package:flutter_application_1/moviepage.dart';
 import 'package:flutter_application_1/widgets/carous.dart';
 import 'package:flutter_application_1/widgets/movieslistscroll.dart';
+import 'package:flutter_application_1/widgets/sidemenu.dart';
 
 // ignore: camel_case_types
 class homepage extends StatefulWidget {
@@ -39,6 +40,9 @@ class _homepageState extends State<homepage> {
         elevation: 0,
         toolbarHeight: 70,
         backgroundColor: Colors.transparent,
+      ),
+      drawer: Drawer(
+        child: sidedrawer(),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -100,7 +104,7 @@ class _homepageState extends State<homepage> {
                       future: topratedMovies,
                       builder: (context, snapshot2) {
                         if (snapshot2.hasError) {
-                          return Center(child: Text("No Image"));
+                          return Center(child: Text("${snapshot2.error}"));
                         } else if (snapshot2.hasData) {
                           return Movielist(
                             snap: snapshot2,
@@ -132,7 +136,7 @@ class _homepageState extends State<homepage> {
                       future: upcomingMovies,
                       builder: (context, snapshot3) {
                         if (snapshot3.hasError) {
-                          return Center(child: Text("No Image"));
+                          return Center(child: Text("${snapshot3.error}"));
                         } else if (snapshot3.hasData) {
                           return Movielist(
                             snap: snapshot3,

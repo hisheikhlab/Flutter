@@ -104,6 +104,17 @@ class _MoviePageState extends State<OneMoviePage> {
                                           const SizedBox(
                                             height: 16,
                                           ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                                'Released: '
+                                                '${snapshot.data![widget.indexe].releasedate}',
+                                                style: const TextStyle(
+                                                    fontSize: 14)),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
                                           Text(
                                             'Rating: ${snapshot.data![widget.indexe].rating}'
                                             ' '
@@ -113,14 +124,6 @@ class _MoviePageState extends State<OneMoviePage> {
                                             style:
                                                 const TextStyle(fontSize: 18),
                                           ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          Text(
-                                              'Released: '
-                                              '${snapshot.data![widget.indexe].releasedate}',
-                                              style: const TextStyle(
-                                                  fontSize: 14)),
                                           const SizedBox(
                                             height: 16,
                                           ),

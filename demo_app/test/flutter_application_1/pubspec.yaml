@@ -33,6 +33,14 @@ dependencies:
   google_fonts: ^2.0.0
   carousel_slider: ^4.0.0
   http: ^0.13.3
+  flutter_native_splash: ^2.3.2
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+  color: "#373737"
+  image: "assets/logo.png"
 
 
   # The following adds the Cupertino Icons font to your application.
