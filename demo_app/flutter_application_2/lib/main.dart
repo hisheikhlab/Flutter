@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           ),
       debugShowCheckedModeBanner: false,
       title: 'Movie App',
-      home: MovieListings(),
+      home: const MovieListings(),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api/tmdb.dart';
 import 'package:flutter_application_1/models/moviemodl.dart';
-import 'package:flutter_application_1/moviepage.dart';
+import 'package:flutter_application_1/categoriespage.dart';
 import 'package:flutter_application_1/widgets/carous.dart';
 import 'package:flutter_application_1/widgets/movieslistscroll.dart';
-import 'package:flutter_application_1/widgets/sidemenu.dart';
+// import 'package:flutter_application_1/widgets/sidemenu.dart';
 
 // ignore: camel_case_types
 class homepage extends StatefulWidget {
@@ -41,13 +41,13 @@ class _homepageState extends State<homepage> {
         toolbarHeight: 70,
         backgroundColor: Colors.transparent,
       ),
-      drawer: Drawer(
-        child: sidedrawer(),
-      ),
+      // drawer: const Drawer(
+      //   child: sidedrawer(),
+      // ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -56,16 +56,16 @@ class _homepageState extends State<homepage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MoviePage(
+                          builder: (context) => const MoviePage(
                                 ctg: 'Trending Movies',
                               )));
                 },
-                child: Text(
+                child: const Text(
                   "Trending Movies",
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
               SizedBox(
@@ -73,7 +73,7 @@ class _homepageState extends State<homepage> {
                       future: trendingMovies,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
-                          return Center(child: Text("No Image"));
+                          return const Center(child: Text("No Image"));
                         } else if (snapshot.hasData) {
                           return Carousel(
                             snap: snapshot,
@@ -84,7 +84,7 @@ class _homepageState extends State<homepage> {
                               child: CircularProgressIndicator());
                         }
                       })),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               TextButton(
                   onPressed: () {
                     Navigator.push(

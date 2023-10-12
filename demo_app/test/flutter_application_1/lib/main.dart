@@ -14,6 +14,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutterflix',
         theme: ThemeData(colorScheme: ColorScheme.dark()),
-        home: homepage());
+        home: const homepage());
   }
 }

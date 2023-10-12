@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/box.dart';
-import 'package:flutter_application_2/drawerapp.dart';
-import 'package:flutter_application_2/page2.dart';
+import 'package:flutter_application_2/api/tmdb.dart';
+import 'package:flutter_application_2/searchpage.dart';
+import 'package:flutter_application_2/widgets/drawerapp.dart';
+import 'package:flutter_application_2/models/movieModel.dart';
+import 'package:flutter_application_2/widgets/newboxx.dart';
+import 'package:flutter_application_2/Categorypage.dart';
 
 class MovieListings extends StatefulWidget {
-  const MovieListings({super.key});
+  const MovieListings({
+    super.key,
+  });
 
   @override
   State<MovieListings> createState() => _MovieListingsState();
 }
 
 class _MovieListingsState extends State<MovieListings> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late Future<List<moviesModel>> popularMovies;
+  late Future<List<moviesModel>> topratedMovies;
+  late Future<List<moviesModel>> upcomingMovies;
+  @override
+  void initState() {
+    super.initState();
+    popularMovies = Api().get_popular();
+    topratedMovies = Api().get_toprated();
+    upcomingMovies = Api().get_upcoming();
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(
+        drawer: const Drawer(
           child: MyDrawer(),
         ),
         // appBar: AppBar(
@@ -27,8 +43,9 @@ class _MovieListingsState extends State<MovieListings> {
             child: Column(children: [
           //top bar
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 35),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
                   onPressed: () {
@@ -40,22 +57,30 @@ class _MovieListingsState extends State<MovieListings> {
                     width: 20,
                   ),
                 ),
-                Spacer(),
+                // Spacer(),
                 IconButton(
                   onPressed: () {
                     // Scaffold.of(context).openDrawer();
                   },
-                  icon: Image.asset(
-                    'search_icon.jpg',
-                    height: 20,
-                    width: 20,
+                  icon: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => searchPage()));
+                    },
+                    child: Image.asset(
+                      'search_icon.jpg',
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                 )
               ],
             ),
           ),
           // title
-          Padding(
+          const Padding(
               padding: EdgeInsets.only(left: 30, right: 20, top: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -67,20 +92,26 @@ class _MovieListingsState extends State<MovieListings> {
           //First box
           //boxbar
           Padding(
-            padding: EdgeInsets.only(left: 30, right: 20, top: 35),
+            padding: const EdgeInsets.only(left: 30, right: 20, top: 35),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Popular  _____",
                   textScaleFactor: 1.2,
                 ),
-                Spacer(),
+                // Spacer(),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => pageSec()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => cate_page(
+                                    ftre: popularMovies,
+                                    ctg: 'Popular Movies',
+                                  )));
                     },
-                    child: Text(
+                    child: const Text(
                       "See all >",
                       style: TextStyle(color: Colors.red),
                     )),
@@ -88,25 +119,44 @@ class _MovieListingsState extends State<MovieListings> {
             ),
           ),
           //box grid
-          Boxx(
-            hgt: 200,
-            crosscount: 1,
-            scrolldirec: Axis.horizontal,
-          ),
+          FutureBuilder(
+              future: popularMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text("${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  return NewBoxx(
+                    ctg: 'popular',
+                    snapshot: snapshot,
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
           //Second box
-          //boxbar
           Padding(
-            padding: EdgeInsets.only(left: 30, right: 20, top: 20),
+            padding: const EdgeInsets.only(left: 30, right: 20, top: 35),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Actor  _____",
+                const Text(
+                  "Top Rated  _____",
                   textScaleFactor: 1.2,
                 ),
-                Spacer(),
+                // Spacer(),
                 TextButton(
-                    onPressed: () {},
-                    child: Text(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => cate_page(
+                                    ftre: topratedMovies,
+                                    ctg: 'Top rated Movies',
+                                  )));
+                    },
+                    child: const Text(
                       "See all >",
                       style: TextStyle(color: Colors.red),
                     )),
@@ -114,25 +164,44 @@ class _MovieListingsState extends State<MovieListings> {
             ),
           ),
           //box grid
-          Boxx(
-            hgt: 200,
-            crosscount: 1,
-            scrolldirec: Axis.horizontal,
-          ),
+          FutureBuilder(
+              future: topratedMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text("${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  return NewBoxx(
+                    ctg: 'top rated',
+                    snapshot: snapshot,
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
           //Third box
-          //boxbar
           Padding(
-            padding: EdgeInsets.only(left: 30, right: 20, top: 20),
+            padding: const EdgeInsets.only(left: 30, right: 20, top: 35),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Director  _____",
+                const Text(
+                  "Upcoming  _____",
                   textScaleFactor: 1.2,
                 ),
-                Spacer(),
+                // Spacer(),
                 TextButton(
-                    onPressed: () {},
-                    child: Text(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => cate_page(
+                                    ftre: upcomingMovies,
+                                    ctg: 'Upcoming Movies',
+                                  )));
+                    },
+                    child: const Text(
                       "See all >",
                       style: TextStyle(color: Colors.red),
                     )),
@@ -140,12 +209,23 @@ class _MovieListingsState extends State<MovieListings> {
             ),
           ),
           //box grid
-          Boxx(
-            hgt: 200,
-            crosscount: 1,
-            scrolldirec: Axis.horizontal,
-          ),
-          Padding(
+          FutureBuilder(
+              future: upcomingMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text("${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  return NewBoxx(
+                    ctg: 'upcoming',
+                    snapshot: snapshot,
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
+          const Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
             child: Align(
                 alignment: Alignment.center, child: Text("Created by XXX")),

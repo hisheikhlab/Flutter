@@ -38,7 +38,7 @@ dependencies:
 flutter_native_splash:
   android: true
   ios: true
-  web: true
+  web: false
   color: "#373737"
   image: "assets/logo.png"
 
